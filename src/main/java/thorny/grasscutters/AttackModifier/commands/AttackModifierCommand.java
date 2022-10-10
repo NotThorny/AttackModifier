@@ -4,15 +4,21 @@ import emu.grasscutter.command.Command;
 import emu.grasscutter.command.CommandHandler;
 import emu.grasscutter.game.entity.EntityGadget;
 import emu.grasscutter.game.player.Player;
+import emu.grasscutter.net.proto.VisionTypeOuterClass.VisionType;
 import emu.grasscutter.server.game.GameSession;
+import emu.grasscutter.server.packet.send.PacketSceneEntityDisappearNotify;
 import emu.grasscutter.command.Command.TargetRequirement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 // Command usage
 @Command(label = "attack", aliases = "at", usage = "[gadgetId]", targetRequirement = TargetRequirement.NONE)
 public class AttackModifierCommand implements CommandHandler {
+
+    static List<EntityGadget> activeGadgets = new ArrayList<>(); // Current gadgets
+    static List<EntityGadget> removeGadgets = new ArrayList<>(); // To be removed gadgets
 
     @Override
     public void execute(Player sender, Player targetPlayer, List<String> args) {
@@ -69,10 +75,36 @@ public class AttackModifierCommand implements CommandHandler {
         if(addedAttack != 0){
             EntityGadget att = new EntityGadget(scene, addedAttack, pos, rot);
 
+            // Silly way to track gadget alive time
+            int currTime = (int)(System.currentTimeMillis() - 1665393100);
+            att.setGroupId(currTime);
+            
+            activeGadgets.add(att);
             // Try to make it not hurt self
             scene.addEntity(att);
             att.setFightProperty(2001, 0);
             att.setFightProperty(1, 0);
+            
         }
+        // Remove all gadgets when list not empty
+        if(!activeGadgets.isEmpty()){
+            for (EntityGadget gadget : activeGadgets) {
+
+                // When gadgets have lived for 10 sec
+                if((int)(System.currentTimeMillis() - 1665393100) > (gadget.getGroupId()+10000)){
+                    // Add to removal list
+                    removeGadgets.add(gadget);
+                    
+                    // Remove entity
+                    scene.removeEntity(gadget, VisionType.VISION_TYPE_REMOVE);
+                    scene.broadcastPacket(new PacketSceneEntityDisappearNotify(gadget, VisionType.VISION_TYPE_REMOVE));
+                }
+            }
+            // Remove gadgets and clean list
+            activeGadgets.removeAll(removeGadgets);
+            removeGadgets.clear();
+        }
+        //activeGadgets.removeAll(removeGadgets);
+        //removeGadgets.clear();
     }
 }
