@@ -7,6 +7,7 @@ import emu.grasscutter.game.player.Player;
 import emu.grasscutter.net.proto.VisionTypeOuterClass.VisionType;
 import emu.grasscutter.server.game.GameSession;
 import emu.grasscutter.server.packet.send.PacketSceneEntityDisappearNotify;
+import emu.grasscutter.utils.Position;
 import emu.grasscutter.command.Command.TargetRequirement;
 
 import java.util.ArrayList;
@@ -40,10 +41,6 @@ public class AttackModifierCommand implements CommandHandler {
     }
 
     public static void addAttack(GameSession session, int skillId){
-        // Get position
-        var scene = session.getPlayer().getScene();
-        var pos = session.getPlayer().getPosition();
-        var rot = session.getPlayer().getRotation();
 
         int addedAttack = 0; // Default of no gadget
         
@@ -63,17 +60,21 @@ public class AttackModifierCommand implements CommandHandler {
                 break;
         }
 
+        // Get position
+        var scene = session.getPlayer().getScene();
+        Position pos = new Position(session.getPlayer().getPosition());
+        Position rot = new Position(session.getPlayer().getRotation());
+        var r = 3;
+
         // Try to set position in front of player to not get hit
-        var radius = Math.sqrt(1 * 0.2 / Math.PI);
-        var target = pos;
         double angle = rot.getY();
-        double r = Math.sqrt(Math.random() * radius * radius);
-        target.addX((float) (r * Math.cos(angle))).addZ((float) (r * Math.sin(angle)));
-        pos.set(target);
+        Position target = new Position(pos);
+        target.addX((float) (r * Math.sin(Math.PI/180 * angle)));
+        target.addZ((float) (r * Math.cos(Math.PI/180 * angle)));
         
         // Only spawn on match
         if(addedAttack != 0){
-            EntityGadget att = new EntityGadget(scene, addedAttack, pos, rot);
+            EntityGadget att = new EntityGadget(scene, addedAttack, target, rot);
 
             // Silly way to track gadget alive time
             int currTime = (int)(System.currentTimeMillis() - 1665393100);
