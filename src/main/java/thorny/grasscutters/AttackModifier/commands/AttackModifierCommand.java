@@ -17,7 +17,7 @@ public class AttackModifierCommand implements CommandHandler {
 
     @Override
     public void execute(Player sender, Player targetPlayer, List<String> args) {
-        
+
         /*
          * Command usage available to check the gadgets before adding them
          * Just spawns the gadget where the player is standing, given the id
@@ -65,7 +65,6 @@ public class AttackModifierCommand implements CommandHandler {
         double r = Math.sqrt(Math.random() * radius * radius);
         target.addX((float) (r * Math.cos(angle))).addZ((float) (r * Math.sin(angle)));
         pos.set(target);
-        Grasscutter.getLogger().info("Attack: " + skillId);
         
         // Only spawn on match
         if(addedAttack != 0){
