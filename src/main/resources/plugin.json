@@ -1,0 +1,12 @@
+{
+  "name": "AttackModifer",
+  "description": "testing",
+  "version": "0.1.0-dev",
+  "authors": [ "NotThorny" ],
+  
+  "mainClass": "thorny.grasscutters.AttackModifier.AttackModifier",
+  
+  "comments": [
+    "Don't bug test this because it will break"
+  ]
+}
