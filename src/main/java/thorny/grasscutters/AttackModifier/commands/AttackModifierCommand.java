@@ -1,6 +1,5 @@
 package thorny.grasscutters.AttackModifier.commands;
 
-import emu.grasscutter.Grasscutter;
 import emu.grasscutter.command.Command;
 import emu.grasscutter.command.CommandHandler;
 import emu.grasscutter.game.avatar.Avatar;
@@ -42,11 +41,10 @@ public class AttackModifierCommand implements CommandHandler {
         int thing = 0;
         String state = "on";
         
+        state = args.get(0);
         try {
-            state = args.get(0);
-        } catch (Exception e) {
             thing = Integer.parseInt(args.get(0));
-        }
+        } catch (NumberFormatException e) {}
         
         // Change whether added attacks should be on or not
         if(state.equals("off")){
@@ -131,7 +129,7 @@ public class AttackModifierCommand implements CommandHandler {
             att.setGroupId(currTime);
             
             activeGadgets.add(att);
-            
+
             // Try to make it not hurt self
             scene.addEntity(att);
             att.setFightProperty(2001, 0);
