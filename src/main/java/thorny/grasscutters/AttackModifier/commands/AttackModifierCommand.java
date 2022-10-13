@@ -91,8 +91,8 @@ public class AttackModifierCommand implements CommandHandler {
         if(!activeGadgets.isEmpty()){
             for (EntityGadget gadget : activeGadgets) {
 
-                // When gadgets have lived for 10 sec
-                if((int)(System.currentTimeMillis() - 1665393100) > (gadget.getGroupId()+10000)){
+                // When gadgets have lived for 15 sec
+                if((int)(System.currentTimeMillis() - 1665393100) > (gadget.getGroupId()+15000)){
                     // Add to removal list
                     removeGadgets.add(gadget);
                     
