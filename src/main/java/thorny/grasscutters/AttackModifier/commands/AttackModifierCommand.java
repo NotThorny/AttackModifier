@@ -34,6 +34,7 @@ public class AttackModifierCommand implements CommandHandler {
         var pos = targetPlayer.getPosition();
         var rot = targetPlayer.getRotation();
         int thing = Integer.parseInt(args.get(0));
+        
 
         EntityGadget entity = new EntityGadget(scene, thing, pos, rot);
         scene.addEntity(entity);
@@ -43,17 +44,21 @@ public class AttackModifierCommand implements CommandHandler {
     public static void addAttack(GameSession session, int skillId){
 
         int addedAttack = 0; // Default of no gadget
+        String attType = ""; // Default of no type
         
         // Currently will only damage the player
         switch (skillId) { // For Raiden
             case 10521: // Basic attack
                 addedAttack = 42906105;
+                attType = "basic";
                 break;
             case 10522: // Elemental skill
                 addedAttack = 42906108;
+                attType = "elemental";
                 break;
             case 10525: // Burst
                 addedAttack = 42906119;
+                attType = "burst";
                 break;
             default:
                 // Do nothing
@@ -69,8 +74,12 @@ public class AttackModifierCommand implements CommandHandler {
         // Try to set position in front of player to not get hit
         double angle = rot.getY();
         Position target = new Position(pos);
-        target.addX((float) (r * Math.sin(Math.PI/180 * angle)));
-        target.addZ((float) (r * Math.cos(Math.PI/180 * angle)));
+
+        // Only change gadget pos for basic attack
+        if(attType.equals("basic")){
+            target.addX((float) (r * Math.sin(Math.PI/180 * angle)));
+            target.addZ((float) (r * Math.cos(Math.PI/180 * angle)));
+        }
         
         // Only spawn on match
         if(addedAttack != 0){
@@ -104,8 +113,6 @@ public class AttackModifierCommand implements CommandHandler {
             // Remove gadgets and clean list
             activeGadgets.removeAll(removeGadgets);
             removeGadgets.clear();
-        }
-        //activeGadgets.removeAll(removeGadgets);
-        //removeGadgets.clear();
-    }
-}
+        } // if
+    } // addAttack
+} // AttackModifierCommand
