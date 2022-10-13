@@ -97,7 +97,7 @@ public class AttackModifierCommand implements CommandHandler {
             }
             // Dummy example case for additional avatars
             case 10000063 -> { // Shenhe
-                switch (usedAttack) { // These attacks should damage enemies
+                switch (usedAttack) {
                     default -> addedAttack = -1;
                     case 0 -> addedAttack = 41069031; // Normal attack
                     case 1 -> addedAttack = 41069021; // Elemental skill
@@ -131,14 +131,11 @@ public class AttackModifierCommand implements CommandHandler {
             att.setGroupId(currTime);
             
             activeGadgets.add(att);
+            
             // Try to make it not hurt self
             scene.addEntity(att);
-            
-            // Remove this when adding skill-specific attacks to damage enemies
-            if(avatarId == 10000052){ // Only remove damage for Raiden attacks
-                att.setFightProperty(2001, 0);
-                att.setFightProperty(1, 0);
-            }
+            att.setFightProperty(2001, 0);
+            att.setFightProperty(1, 0);
             
         }
         // Remove all gadgets when list not empty
