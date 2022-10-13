@@ -32,6 +32,7 @@ public class AttackModifierCommand implements CommandHandler {
         /*
          * Command usage available to check the gadgets before adding them
          * Just spawns the gadget where the player is standing, given the id
+         * Also allows turning on/off added attacks
          */
 
         // Spawn a gadget at the players location and in the direction faced with /at gadgetId 
@@ -94,8 +95,9 @@ public class AttackModifierCommand implements CommandHandler {
                     case 2 -> addedAttack = 42906119; // Burst
                 }
             }
+            // Dummy example case for additional avatars
             case 10000063 -> { // Shenhe
-                switch (usedAttack) {
+                switch (usedAttack) { // These attacks should damage enemies
                     default -> addedAttack = -1;
                     case 0 -> addedAttack = 41069031; // Normal attack
                     case 1 -> addedAttack = 41069021; // Elemental skill
@@ -131,8 +133,12 @@ public class AttackModifierCommand implements CommandHandler {
             activeGadgets.add(att);
             // Try to make it not hurt self
             scene.addEntity(att);
-            att.setFightProperty(2001, 0);
-            att.setFightProperty(1, 0);
+            
+            // Remove this when adding skill-specific attacks to damage enemies
+            if(avatarId == 10000052){ // Only remove damage for Raiden attacks
+                att.setFightProperty(2001, 0);
+                att.setFightProperty(1, 0);
+            }
             
         }
         // Remove all gadgets when list not empty
