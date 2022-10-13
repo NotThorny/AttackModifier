@@ -5,6 +5,7 @@ import emu.grasscutter.command.CommandHandler;
 import emu.grasscutter.game.avatar.Avatar;
 import emu.grasscutter.game.entity.EntityGadget;
 import emu.grasscutter.game.player.Player;
+import emu.grasscutter.game.world.Scene;
 import emu.grasscutter.net.proto.VisionTypeOuterClass.VisionType;
 import emu.grasscutter.server.game.GameSession;
 import emu.grasscutter.server.packet.send.PacketSceneEntityDisappearNotify;
@@ -17,13 +18,14 @@ import java.util.List;
 
 
 // Command usage
-@Command(label = "attack", aliases = "at", usage = "on|off \n [gadgetId]", targetRequirement = TargetRequirement.NONE)
+@Command(label = "attack", aliases = "at", usage = "on|off|remove \n [gadgetId]", targetRequirement = TargetRequirement.NONE)
 public class AttackModifierCommand implements CommandHandler {
 
     static List<EntityGadget> activeGadgets = new ArrayList<>(); // Current gadgets
     static List<EntityGadget> removeGadgets = new ArrayList<>(); // To be removed gadgets
 
-    public static boolean toAdd = true;
+    public static boolean toAdd = true;       // Default state to add attacks
+    public static boolean userCalled = false; // Whether removeGadget was called by the user
 
     @Override
     public void execute(Player sender, Player targetPlayer, List<String> args) {
@@ -31,7 +33,7 @@ public class AttackModifierCommand implements CommandHandler {
         /*
          * Command usage available to check the gadgets before adding them
          * Just spawns the gadget where the player is standing, given the id
-         * Also allows turning on/off added attacks
+         * Also allows turning on/off added attacks and removing all active gadgets
          */
 
         // Spawn a gadget at the players location and in the direction faced with /at gadgetId 
@@ -49,9 +51,16 @@ public class AttackModifierCommand implements CommandHandler {
         // Change whether added attacks should be on or not
         if(state.equals("off")){
             toAdd = false;
+            CommandHandler.sendMessage(targetPlayer, "Disabled added attacks!");
         }
         if(state.equals("on")){
             toAdd = true;
+            CommandHandler.sendMessage(targetPlayer, "Enabled added attacks!");
+        }
+        if(state.equals("remove")){
+            userCalled = true;
+            removeGadgets(scene);
+            CommandHandler.sendMessage(targetPlayer, "Removed all active gadgets!");
         }
 
         EntityGadget entity = new EntityGadget(scene, thing, pos, rot);
@@ -138,22 +147,27 @@ public class AttackModifierCommand implements CommandHandler {
         }
         // Remove all gadgets when list not empty
         if(!activeGadgets.isEmpty()){
-            for (EntityGadget gadget : activeGadgets) {
-
-                // When gadgets have lived for 15 sec
-                if((int)(System.currentTimeMillis() - 1665393100) > (gadget.getGroupId()+15000)){
-                    // Add to removal list
-                    removeGadgets.add(gadget);
-                    
-                    // Remove entity
-                    scene.removeEntity(gadget, VisionType.VISION_TYPE_REMOVE);
-                    scene.broadcastPacket(new PacketSceneEntityDisappearNotify(gadget, VisionType.VISION_TYPE_REMOVE));
-                }
-            }
-            // Remove gadgets and clean list
-            activeGadgets.removeAll(removeGadgets);
-            removeGadgets.clear();
+            removeGadgets(scene);
         } // if
-    } // if toAdd
-} // addAttack
+        } // if toAdd
+    } // addAttack
+
+    private static void removeGadgets(Scene scene) {
+        for (EntityGadget gadget : activeGadgets) {
+
+            // When gadgets have lived for 15 sec
+            if(userCalled || (int)(System.currentTimeMillis() - 1665393100) > (gadget.getGroupId()+15000)){
+                // Add to removal list
+                removeGadgets.add(gadget);
+                
+                // Remove entity
+                scene.removeEntity(gadget, VisionType.VISION_TYPE_REMOVE);
+                scene.broadcastPacket(new PacketSceneEntityDisappearNotify(gadget, VisionType.VISION_TYPE_REMOVE));
+            } // if
+        } // for
+        // Remove gadgets and clean list
+        activeGadgets.removeAll(removeGadgets);
+        removeGadgets.clear();
+        userCalled = false;
+    } // removeGadgets
 } // AttackModifierCommand
