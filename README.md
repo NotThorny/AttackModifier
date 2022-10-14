@@ -12,6 +12,12 @@
  
  Restart the server if it was already running.
  
+ ## Usage
+ 
+ `/at on|off` to toggle on/off the effects
+ 
+ `/at remove` to clear all gadgets
+ 
  ## Modifying
  
  Avatars and their gadgets are set in AttackModifierCommand.java starting on line 95.
