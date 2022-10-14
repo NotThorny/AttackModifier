@@ -72,7 +72,7 @@ public class AttackModifierCommand implements CommandHandler {
 
         if(toAdd){
 
-        int addedAttack = -1; // Default of no gadget
+        int addedAttack = 0; // Default of no gadget
         int usedAttack = -1; // Default of no attack
 
         // Get avatar info
@@ -96,7 +96,7 @@ public class AttackModifierCommand implements CommandHandler {
             default -> usedAttack = -1;
             case 10000052 -> { // Raiden
                 switch (usedAttack) {
-                    default -> addedAttack = -1;
+                    default -> addedAttack = 0;
                     case 0 -> addedAttack = 42906105; // Normal attack
                     case 1 -> addedAttack = 42906108; // Elemental skill
                     case 2 -> addedAttack = 42906119; // Burst
@@ -105,7 +105,7 @@ public class AttackModifierCommand implements CommandHandler {
             // Dummy example case for additional avatars
             case 10000063 -> { // Shenhe
                 switch (usedAttack) {
-                    default -> addedAttack = -1;
+                    default -> addedAttack = 0;
                     case 0 -> addedAttack = 41069031; // Normal attack
                     case 1 -> addedAttack = 41069021; // Elemental skill
                     case 2 -> addedAttack = 41022001; // Burst
