@@ -20,6 +20,14 @@
  
  ## Modifying
  
- Avatars and their gadgets are set in AttackModifierCommand.java starting on line 95.
+ Now with `config.json` yay
  
- Raiden and Shenhe are both there to show how the cases work, but for adding new avatars just copy a new case with the avatar id you want to add and change the addedAttacks to the gadgets you desire.
+ ```json
+ "ayakaIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  }
+ ```
