@@ -1,8 +1,6 @@
 # Attack Modifier Basics
 
 ### This plugin is basically a cosmetic-only simple implementation of how this could work.
-
- Attack as Raiden to make fun things happen.
  
  You may get hit by your own attacks.
 
