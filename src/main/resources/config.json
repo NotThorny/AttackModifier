@@ -1,4 +1,422 @@
 {
-  "sendJoinMessage": true,
-  "joinMessage": "This is the attack mod plugin!"
+  "ayakaIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "jeanIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "travelerMaleNoElementIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "lisaIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "travelerFemaleNoElementIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "barbaraIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "kaeyaIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "dilucIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "razorIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "amberIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "ventiIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "xianglingIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "beidouIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "xingqiuIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "xiaoIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "ningguangIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "kleeIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "zhongliIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "fischlIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "bennettIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "tartagliaIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "noelleIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "qiqiIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "chongyunIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "ganyuIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "albedoIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "dionaIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "monaIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "keqingIds": {
+    "skill": {
+      "normalAtk": 42906009,
+      "elementalSkill": 42509009,
+      "elementalBurst": 0
+    }
+  },
+  "sucroseIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "xinyanIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "rosariaIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "hutaoIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "kazuhaIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "yanfeiIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "yoimiyaIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "thomaIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "eulaIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "raidenshogunIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "sayuIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "kokomiIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "gorouIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "kujousaraIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "ittoIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "yaemikoIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "heizouIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "yelanIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "aloyIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "shenheIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "yunjinIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "kukishinobuIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "ayatoIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "colleiIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "doriIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "tighnariIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "nilouIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "cynoIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "candaceIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "nahidaIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "laylaIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  }
 }

@@ -43,7 +43,6 @@ public final class AttackModifier extends Plugin {
     public void onDisable() {
         // Log a plugin status message.
         this.getLogger().info("Attack Modifier has been disabled.");
-        this.config.saveConfig();
     }
 
     public void getConfig() {
