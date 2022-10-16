@@ -39,7 +39,7 @@ public final class Config {
     public characters yoimiyaIds = new characters();
     public characters tohmaIds = new characters();
     public characters eulaIds = new characters();
-    public characters shogunIds = new characters();
+    public characters shougunIds = new characters();
     public characters sayuIds = new characters();
     public characters kokomiIds = new characters();
     public characters gorouIds = new characters();
@@ -73,8 +73,8 @@ public final class Config {
         }
     }
     public void setDefaults(){
-        shogunIds.skill.normalAtk = 42906105;
-        shogunIds.skill.elementalSkill = 42906108;
-        shogunIds.skill.elementalBurst = 42906119;
+        shougunIds.skill.normalAtk = 42906105;
+        shougunIds.skill.elementalSkill = 42906108;
+        shougunIds.skill.elementalBurst = 42906119;
     }
 }
