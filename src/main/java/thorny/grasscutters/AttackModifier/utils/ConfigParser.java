@@ -2,14 +2,12 @@ package thorny.grasscutters.AttackModifier.utils;
 
 import com.google.gson.GsonBuilder;
 import emu.grasscutter.Grasscutter;
-import thorny.grasscutters.AttackModifier.AttackModifier;
 
 import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.Objects;
 
 public final class ConfigParser {
 

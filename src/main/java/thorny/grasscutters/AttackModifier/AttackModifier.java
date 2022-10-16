@@ -1,8 +1,5 @@
 package thorny.grasscutters.AttackModifier;
 
-import com.google.gson.GsonBuilder;
-
-import emu.grasscutter.Grasscutter;
 import emu.grasscutter.plugin.Plugin;
 import emu.grasscutter.server.event.EventHandler;
 import emu.grasscutter.server.event.HandlerPriority;
