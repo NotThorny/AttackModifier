@@ -13,7 +13,7 @@
       "elementalBurst": 0
     }
   },
-  "travelerMaleNoElementIds": {
+  "playerboyIds": {
     "skill": {
       "normalAtk": 0,
       "elementalSkill": 0,
@@ -27,7 +27,7 @@
       "elementalBurst": 0
     }
   },
-  "travelerFemaleNoElementIds": {
+  "playergirlIds": {
     "skill": {
       "normalAtk": 0,
       "elementalSkill": 0,
@@ -237,7 +237,7 @@
       "elementalBurst": 0
     }
   },
-  "yanfeiIds": {
+  "feiyanIds": {
     "skill": {
       "normalAtk": 0,
       "elementalSkill": 0,
@@ -251,7 +251,7 @@
       "elementalBurst": 0
     }
   },
-  "thomaIds": {
+  "tohmaIds": {
     "skill": {
       "normalAtk": 0,
       "elementalSkill": 0,
@@ -265,7 +265,7 @@
       "elementalBurst": 0
     }
   },
-  "raidenshogunIds": {
+  "shogunIds": {
     "skill": {
       "normalAtk": 0,
       "elementalSkill": 0,
@@ -293,7 +293,7 @@
       "elementalBurst": 0
     }
   },
-  "kujousaraIds": {
+  "saraIds": {
     "skill": {
       "normalAtk": 0,
       "elementalSkill": 0,
@@ -307,14 +307,14 @@
       "elementalBurst": 0
     }
   },
-  "yaemikoIds": {
+  "yaeIds": {
     "skill": {
       "normalAtk": 0,
       "elementalSkill": 0,
       "elementalBurst": 0
     }
   },
-  "heizouIds": {
+  "heizoIds": {
     "skill": {
       "normalAtk": 0,
       "elementalSkill": 0,
@@ -349,7 +349,7 @@
       "elementalBurst": 0
     }
   },
-  "kukishinobuIds": {
+  "shinobuIds": {
     "skill": {
       "normalAtk": 0,
       "elementalSkill": 0,
