@@ -72,4 +72,9 @@ public final class Config {
             public int elementalBurst = 0;
         }
     }
+    public void setDefaults(){
+        shogunIds.skill.normalAtk = 42906105;
+        shogunIds.skill.elementalSkill = 42906108;
+        shogunIds.skill.elementalBurst = 42906119;
+    }
 }

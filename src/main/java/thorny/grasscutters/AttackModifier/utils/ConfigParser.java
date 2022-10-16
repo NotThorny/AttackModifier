@@ -33,6 +33,7 @@ public final class ConfigParser {
             Grasscutter.getLogger().info("[AttackModifier] Config Loaded!");
         } catch (Exception e) {
             this.config = new Config();
+            this.config.setDefaults();
             Grasscutter.getLogger().info("[AttackModifier] Basic config creating...");
         }
 
