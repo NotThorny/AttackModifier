@@ -46,6 +46,7 @@ public class AttackModifierCommand implements CommandHandler {
         var rot = targetPlayer.getRotation();
         int thing = 0;
         String state = "on";
+        String avatarName = targetPlayer.getTeamManager().getCurrentAvatarEntity().getAvatar().getAvatarData().getName().toLowerCase() + "Ids";
 
         state = args.get(0);
         try {
@@ -55,12 +56,18 @@ public class AttackModifierCommand implements CommandHandler {
 
         // Change whether added attacks should be on or not
         if (state.equals("off")) {
-            toAdd = false;
-            CommandHandler.sendMessage(targetPlayer, "Disabled added attacks!");
+            if(toAdd){
+                toAdd = false;
+                CommandHandler.sendMessage(targetPlayer, "Disabled added attacks!");
+            }else{CommandHandler.sendMessage(targetPlayer, "Attacks already disabled!");}
+            
         }
         if (state.equals("on")) {
-            toAdd = true;
-            CommandHandler.sendMessage(targetPlayer, "Enabled added attacks!");
+            if(!toAdd){
+                toAdd = true;
+                CommandHandler.sendMessage(targetPlayer, "Enabled added attacks!");
+            }else{CommandHandler.sendMessage(targetPlayer, "Attacks already enabled!");}
+            
         }
         if (state.equals("remove")) {
             userCalled = true;
@@ -71,6 +78,25 @@ public class AttackModifierCommand implements CommandHandler {
             userCalled = true;
             AttackModifier.getInstance().reloadConfig();
             CommandHandler.sendMessage(targetPlayer, "Reloaded config!");
+        }
+        if (state.equals("set")){
+            var attackType = args.get(1).toLowerCase();
+            int newGadget = Integer.parseInt(args.get(2));
+            characters avatarToChange = null;
+            try {
+                avatarToChange = getCharacter.getCurrent(avatarName);
+                CommandHandler.sendMessage(targetPlayer, "Setting " + attackType + " to " + newGadget);
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+                CommandHandler.sendMessage(targetPlayer, "Failed to set gadget! Change in plugins/AttackModifier/config.json");
+            }
+            switch (attackType) {
+                default ->  CommandHandler.sendMessage(targetPlayer, "/at set n|e|q [gadgetId]");
+                case "n" -> avatarToChange.skill.normalAtk = newGadget; // Normal attack
+                case "e" -> avatarToChange.skill.elementalSkill = newGadget; // Elemental skill
+                case "q" -> avatarToChange.skill.elementalBurst = newGadget; // Burst
+            }
+            AttackModifier.getInstance().reloadConfig();
+            CommandHandler.sendMessage(targetPlayer, "Set new gadget!");
         }
 
         EntityGadget entity = new EntityGadget(scene, thing, pos, rot);

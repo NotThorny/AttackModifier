@@ -22,6 +22,10 @@ mvn clean install
  `/at on|off` to toggle on/off the effects
  
  `/at remove` to clear all gadgets
+
+ `/at reload` to reload the config
+
+ `/at set n|e|q [gadgetId]` to set the gadget for the current character's normal attack (n), elemental skill (e), or burst (q)
  
  ## Modifying
  
