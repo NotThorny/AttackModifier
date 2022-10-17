@@ -1,5 +1,6 @@
 package thorny.grasscutters.AttackModifier.commands;
 
+import emu.grasscutter.Grasscutter;
 import emu.grasscutter.command.Command;
 import emu.grasscutter.command.CommandHandler;
 import emu.grasscutter.game.avatar.Avatar;
@@ -12,22 +13,24 @@ import emu.grasscutter.server.packet.send.PacketSceneEntityDisappearNotify;
 import emu.grasscutter.utils.Position;
 import emu.grasscutter.command.Command.TargetRequirement;
 import emu.grasscutter.data.excels.AvatarSkillDepotData;
+import thorny.grasscutters.AttackModifier.AttackModifier;
+import thorny.grasscutters.AttackModifier.utils.*;
+import thorny.grasscutters.AttackModifier.utils.Config.characters;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 // Command usage
-@Command(label = "attack", aliases = "at", usage = "on|off|remove \n [gadgetId]", targetRequirement = TargetRequirement.NONE)
+@Command(label = "attack", aliases = "at", usage = "on|off|remove|reload \n set n|e|q [gadgetId]", targetRequirement = TargetRequirement.NONE)
 public class AttackModifierCommand implements CommandHandler {
+    private static final Config config = AttackModifier.getInstance().config.getConfig();
 
     static List<EntityGadget> activeGadgets = new ArrayList<>(); // Current gadgets
     static List<EntityGadget> removeGadgets = new ArrayList<>(); // To be removed gadgets
 
-    public static boolean toAdd = true;       // Default state to add attacks
+    public static boolean toAdd = true; // Default state to add attacks
     public static boolean userCalled = false; // Whether removeGadget was called by the user
 
-    @Override
     public void execute(Player sender, Player targetPlayer, List<String> args) {
 
         /*
@@ -36,31 +39,64 @@ public class AttackModifierCommand implements CommandHandler {
          * Also allows turning on/off added attacks and removing all active gadgets
          */
 
-        // Spawn a gadget at the players location and in the direction faced with /at gadgetId 
+        // Spawn a gadget at the players location and in the direction faced with /at
+        // gadgetId
         var scene = targetPlayer.getScene();
         var pos = targetPlayer.getPosition();
         var rot = targetPlayer.getRotation();
         int thing = 0;
         String state = "on";
-        
+        String avatarName = targetPlayer.getTeamManager().getCurrentAvatarEntity().getAvatar().getAvatarData().getName().toLowerCase() + "Ids";
+
         state = args.get(0);
         try {
             thing = Integer.parseInt(args.get(0));
-        } catch (NumberFormatException e) {}
-        
+        } catch (NumberFormatException e) {
+        }
+
         // Change whether added attacks should be on or not
-        if(state.equals("off")){
-            toAdd = false;
-            CommandHandler.sendMessage(targetPlayer, "Disabled added attacks!");
+        if (state.equals("off")) {
+            if(toAdd){
+                toAdd = false;
+                CommandHandler.sendMessage(targetPlayer, "Disabled added attacks!");
+            }else{CommandHandler.sendMessage(targetPlayer, "Attacks already disabled!");}
+            
         }
-        if(state.equals("on")){
-            toAdd = true;
-            CommandHandler.sendMessage(targetPlayer, "Enabled added attacks!");
+        if (state.equals("on")) {
+            if(!toAdd){
+                toAdd = true;
+                CommandHandler.sendMessage(targetPlayer, "Enabled added attacks!");
+            }else{CommandHandler.sendMessage(targetPlayer, "Attacks already enabled!");}
+            
         }
-        if(state.equals("remove")){
+        if (state.equals("remove")) {
             userCalled = true;
             removeGadgets(scene);
             CommandHandler.sendMessage(targetPlayer, "Removed all active gadgets!");
+        }
+        if (state.equals("reload")) {
+            userCalled = true;
+            AttackModifier.getInstance().reloadConfig();
+            CommandHandler.sendMessage(targetPlayer, "Reloaded config!");
+        }
+        if (state.equals("set")){
+            var attackType = args.get(1).toLowerCase();
+            int newGadget = Integer.parseInt(args.get(2));
+            characters avatarToChange = null;
+            try {
+                avatarToChange = getCharacter.getCurrent(avatarName);
+                CommandHandler.sendMessage(targetPlayer, "Setting " + attackType + " to " + newGadget);
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+                CommandHandler.sendMessage(targetPlayer, "Failed to set gadget! Change in plugins/AttackModifier/config.json");
+            }
+            switch (attackType) {
+                default ->  CommandHandler.sendMessage(targetPlayer, "/at set n|e|q [gadgetId]");
+                case "n" -> avatarToChange.skill.normalAtk = newGadget; // Normal attack
+                case "e" -> avatarToChange.skill.elementalSkill = newGadget; // Elemental skill
+                case "q" -> avatarToChange.skill.elementalBurst = newGadget; // Burst
+            }
+            AttackModifier.getInstance().reloadConfig();
+            CommandHandler.sendMessage(targetPlayer, "Set new gadget!");
         }
 
         EntityGadget entity = new EntityGadget(scene, thing, pos, rot);
@@ -68,87 +104,85 @@ public class AttackModifierCommand implements CommandHandler {
 
     }
 
-    public static void addAttack(GameSession session, int skillId){
+    public static void addAttack(GameSession session, int skillId) {
 
-        if(toAdd){
+        if (toAdd) {
 
-        int addedAttack = 0; // Default of no gadget
-        int usedAttack = -1; // Default of no attack
+            int addedAttack = 0; // Default of no gadget
+            int usedAttack = -1; // Default of no attack
 
-        // Get avatar info
-        Avatar avatar = session.getPlayer().getTeamManager().getCurrentAvatarEntity().getAvatar();
-        AvatarSkillDepotData skillDepot = avatar.getSkillDepot();
-        int avatarId = avatar.getAvatarId();
+            // Get avatar info
+            Avatar avatar = session.getPlayer().getTeamManager().getCurrentAvatarEntity().getAvatar();
+            AvatarSkillDepotData skillDepot = avatar.getSkillDepot();
 
-        // Check what skill type was used
-        if (skillId == (skillDepot.getSkills().get(0))) {
-            usedAttack = 0;
-        }
-        if (skillId == (skillDepot.getSkills().get(1))) {
-            usedAttack = 1;
-        }
-        if (skillId == (skillDepot.getEnergySkill())) {
-            usedAttack = 2;
-        }
-
-        // Use attack for specific avatar
-        switch (avatarId) {
-            default -> usedAttack = -1;
-            case 10000052 -> { // Raiden
-                switch (usedAttack) {
-                    default -> addedAttack = 0;
-                    case 0 -> addedAttack = 42906105; // Normal attack
-                    case 1 -> addedAttack = 42906108; // Elemental skill
-                    case 2 -> addedAttack = 42906119; // Burst
-                }
+            // Check what skill type was used
+            if (skillId == (skillDepot.getSkills().get(0))) {
+                usedAttack = 0;
             }
-            // Dummy example case for additional avatars
-            case 10000063 -> { // Shenhe
-                switch (usedAttack) {
-                    default -> addedAttack = 0;
-                    case 0 -> addedAttack = 41069031; // Normal attack
-                    case 1 -> addedAttack = 41069021; // Elemental skill
-                    case 2 -> addedAttack = 41022001; // Burst
-                }
-            } // Shenhe
-        }
+            if (skillId == (skillDepot.getSkills().get(1))) {
+                usedAttack = 1;
+            }
+            if (skillId == (skillDepot.getEnergySkill())) {
+                usedAttack = 2;
+            }
 
-        // Get position
-        var scene = session.getPlayer().getScene();
-        Position pos = new Position(session.getPlayer().getPosition());
-        Position rot = new Position(session.getPlayer().getRotation());
-        var r = 3;
+            // Get current avatar name
+            String curName = avatar.getAvatarData().getName().toLowerCase() + "Ids";
+            characters currentAvatar = null;
 
-        // Try to set position in front of player to not get hit
-        double angle = rot.getY();
-        Position target = new Position(pos);
+            // Get avatar from config
+            try {
+                currentAvatar = getCharacter.getCurrent(curName);
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+                // Should only be called when config is missing entry for the active character
+                Grasscutter.getLogger().info("Invalid or missing config for: " + curName);
+                e.printStackTrace();
+            }
 
-        // Only change gadget pos for basic attack
-        if(usedAttack == 0){
-            target.addX((float) (r * Math.sin(Math.PI/180 * angle)));
-            target.addZ((float) (r * Math.cos(Math.PI/180 * angle)));
-        }
-        
-        // Only spawn on match
-        if(addedAttack != 0){
-            EntityGadget att = new EntityGadget(scene, addedAttack, target, rot);
+            // Universal switch
+            switch (usedAttack) {
+                default -> addedAttack = 0;
+                case 0 -> addedAttack = currentAvatar.skill.normalAtk; // Normal attack
+                case 1 -> addedAttack = currentAvatar.skill.elementalSkill; // Elemental skill
+                case 2 -> addedAttack = currentAvatar.skill.elementalBurst; // Burst
+            }
 
-            // Silly way to track gadget alive time
-            int currTime = (int)(System.currentTimeMillis() - 1665393100);
-            att.setGroupId(currTime);
-            
-            activeGadgets.add(att);
+            // Get position
+            var scene = session.getPlayer().getScene();
+            Position pos = new Position(session.getPlayer().getPosition());
+            Position rot = new Position(session.getPlayer().getRotation());
+            var r = 3;
 
-            // Try to make it not hurt self
-            scene.addEntity(att);
-            att.setFightProperty(2001, 0);
-            att.setFightProperty(1, 0);
-            
-        }
-        // Remove all gadgets when list not empty
-        if(!activeGadgets.isEmpty()){
-            removeGadgets(scene);
-        } // if
+            // Try to set position in front of player to not get hit
+            double angle = rot.getY();
+            Position target = new Position(pos);
+
+            // Only change gadget pos for basic attack
+            if (usedAttack == 0) {
+                target.addX((float) (r * Math.sin(Math.PI / 180 * angle)));
+                target.addZ((float) (r * Math.cos(Math.PI / 180 * angle)));
+            }
+
+            // Only spawn on match
+            if (addedAttack != 0) {
+                EntityGadget att = new EntityGadget(scene, addedAttack, target, rot);
+
+                // Silly way to track gadget alive time
+                int currTime = (int) (System.currentTimeMillis() - 1665393100);
+                att.setGroupId(currTime);
+
+                activeGadgets.add(att);
+
+                // Try to make it not hurt self
+                scene.addEntity(att);
+                att.setFightProperty(2001, 0);
+                att.setFightProperty(1, 0);
+
+            }
+            // Remove all gadgets when list not empty
+            if (!activeGadgets.isEmpty()) {
+                removeGadgets(scene);
+            } // if
         } // if toAdd
     } // addAttack
 
@@ -156,18 +190,29 @@ public class AttackModifierCommand implements CommandHandler {
         for (EntityGadget gadget : activeGadgets) {
 
             // When gadgets have lived for 15 sec
-            if(userCalled || (int)(System.currentTimeMillis() - 1665393100) > (gadget.getGroupId()+15000)){
+            if (userCalled || (int) (System.currentTimeMillis() - 1665393100) > (gadget.getGroupId() + 15000)) {
                 // Add to removal list
                 removeGadgets.add(gadget);
-                
+
                 // Remove entity
                 scene.removeEntity(gadget, VisionType.VISION_TYPE_REMOVE);
                 scene.broadcastPacket(new PacketSceneEntityDisappearNotify(gadget, VisionType.VISION_TYPE_REMOVE));
             } // if
         } // for
-        // Remove gadgets and clean list
+          // Remove gadgets and clean list
         activeGadgets.removeAll(removeGadgets);
         removeGadgets.clear();
         userCalled = false;
     } // removeGadgets
+
+    public static class getCharacter {
+        public static characters getCurrent(String curName)
+                throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+            characters curr = new characters();
+            var me = config.getClass().getDeclaredField(curName);
+            me.setAccessible(true);
+            curr = (characters) me.get(config);
+            return curr;
+        }
+    }
 } // AttackModifierCommand

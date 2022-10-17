@@ -1,14 +1,19 @@
 # Attack Modifier Basics
 
 ### This plugin is basically a cosmetic-only simple implementation of how this could work.
-
- Attack as Raiden to make fun things happen.
  
  You may get hit by your own attacks.
 
 ## Installation
+**Prebuilt JAR:** 
+- Get latest AttackModifier.jar release from [releases](https://github.com/NotThorny/AttackModifier/releases) and place it in your `\grasscutter\plugins` folder.
 
- Get latest AttackModifier.jar release from [releases](https://github.com/NotThorny/AttackModifier/releases) and place it in your `\grasscutter\plugins` folder.
+**Build from source:**
+- Run these commands:
+```
+cd AttackModifier 
+mvn clean install
+```
  
  Restart the server if it was already running.
  
@@ -17,9 +22,21 @@
  `/at on|off` to toggle on/off the effects
  
  `/at remove` to clear all gadgets
+
+ `/at reload` to reload the config
+
+ `/at set n|e|q [gadgetId]` to set the gadget for the current character's normal attack (n), elemental skill (e), or burst (q)
  
  ## Modifying
  
- Avatars and their gadgets are set in AttackModifierCommand.java starting on line 95.
+ Now with `config.json` yay
  
- Raiden and Shenhe are both there to show how the cases work, but for adding new avatars just copy a new case with the avatar id you want to add and change the addedAttacks to the gadgets you desire.
+ ```json
+ "ayakaIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  }
+ ```
