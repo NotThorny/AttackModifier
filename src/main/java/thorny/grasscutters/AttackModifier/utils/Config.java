@@ -2,7 +2,7 @@ package thorny.grasscutters.AttackModifier.utils;
 
 public final class Config {
     public characters ayakaIds = new characters();
-    public characters jeanIds = new characters();
+    public characters qinIds = new characters();
     public characters playerboyIds = new characters();
     public characters lisaIds = new characters();
     public characters playergirlIds = new characters();
@@ -61,6 +61,8 @@ public final class Config {
     public characters candaceIds = new characters();
     public characters nahidaIds = new characters();
     public characters laylaIds = new characters();
+    public characters wandererIds = new characters();
+    public characters faruzanIds = new characters();
 
     public static class characters {
 
