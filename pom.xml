@@ -28,7 +28,7 @@
         <dependency>
             <groupId>xyz.grasscutters</groupId> <!-- Versions below 1.0.3-dev are on 'tech.xigam' -->
             <artifactId>grasscutter</artifactId>
-            <version>1.4.5-fork</version> <!-- Replace with the latest version of the API. -->
+            <version>1.4.5</version> <!-- Replace with the latest version of the API. -->
         </dependency>
     </dependencies>
 </project>
