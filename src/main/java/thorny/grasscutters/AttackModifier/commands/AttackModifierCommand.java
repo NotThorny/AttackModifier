@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Command usage
-@Command(label = "attack", aliases = "at", usage = "on|off|remove|reload \n set n|e|q [gadgetId]", targetRequirement = TargetRequirement.NONE)
+@Command(label = "attack", aliases = "at", usage = "on|off|remove|reload \n set n|e|q [gadgetId]", targetRequirement = TargetRequirement.PLAYER)
 public class AttackModifierCommand implements CommandHandler {
     private static final Config config = AttackModifier.getInstance().config.getConfig();
 
