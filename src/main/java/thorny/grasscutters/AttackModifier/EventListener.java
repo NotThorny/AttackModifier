@@ -33,9 +33,10 @@ public final class EventListener {
                 // Get packet info
                 var session = event.getGameSession();
                 int skillId = notify.getSkillId();
+                int uuid = session.getPlayer().getUid();
 
                 // Send to addAttack
-                AttackModifierCommand.addAttack(session, skillId);
+                AttackModifierCommand.addAttack(session, skillId, uuid);
             }
         }
 }

@@ -24,6 +24,7 @@ import java.util.List;
 @Command(label = "attack", aliases = "at", usage = "on|off|remove|reload \n set n|e|q [gadgetId]", targetRequirement = TargetRequirement.PLAYER)
 public class AttackModifierCommand implements CommandHandler {
     private static final Config config = AttackModifier.getInstance().config.getConfig();
+    static ArrayList<Integer> blacklistUIDs = AttackModifier.getInstance().config.getBlacklist();
 
     static List<EntityGadget> activeGadgets = new ArrayList<>(); // Current gadgets
     static List<EntityGadget> removeGadgets = new ArrayList<>(); // To be removed gadgets
@@ -45,8 +46,9 @@ public class AttackModifierCommand implements CommandHandler {
         var pos = targetPlayer.getPosition();
         var rot = targetPlayer.getRotation();
         int thing = 0;
-        String state = "on";
+        String state;
         String avatarName = targetPlayer.getTeamManager().getCurrentAvatarEntity().getAvatar().getAvatarData().getName().toLowerCase() + "Ids";
+        int uid = targetPlayer.getUid();        
 
         state = args.get(0);
         try {
@@ -56,19 +58,21 @@ public class AttackModifierCommand implements CommandHandler {
 
         // Change whether added attacks should be on or not
         if (state.equals("off")) {
-            if(toAdd){
-                toAdd = false;
-                CommandHandler.sendMessage(targetPlayer, "Disabled added attacks!");
-            }else{CommandHandler.sendMessage(targetPlayer, "Attacks already disabled!");}
-            
+            if(blacklistUIDs.contains(uid)){
+                CommandHandler.sendMessage(targetPlayer, "Added attacks already disabled!");
+            }else{blacklistUIDs.add(uid);
+                AttackModifier.getInstance().saveBlacklist(blacklistUIDs);
+                CommandHandler.sendMessage(targetPlayer, "Disabled added attacks!");}   
         }
+
         if (state.equals("on")) {
-            if(!toAdd){
-                toAdd = true;
+            if(blacklistUIDs.contains(uid)){
+                blacklistUIDs.remove(Integer.valueOf(uid));
+                AttackModifier.getInstance().saveBlacklist(blacklistUIDs);
                 CommandHandler.sendMessage(targetPlayer, "Enabled added attacks!");
-            }else{CommandHandler.sendMessage(targetPlayer, "Attacks already enabled!");}
-            
+            }else{CommandHandler.sendMessage(targetPlayer, "Added attacks already enabled!!");}    
         }
+
         if (state.equals("remove")) {
             userCalled = true;
             removeGadgets(scene);
@@ -104,9 +108,9 @@ public class AttackModifierCommand implements CommandHandler {
 
     }
 
-    public static void addAttack(GameSession session, int skillId) {
+    public static void addAttack(GameSession session, int skillId, int uid) {
 
-        if (toAdd) {
+        if (!(blacklistUIDs.contains(uid))) {
 
             int addedAttack = 0; // Default of no gadget
             int usedAttack = -1; // Default of no attack

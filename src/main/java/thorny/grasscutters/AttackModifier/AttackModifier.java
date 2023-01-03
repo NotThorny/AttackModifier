@@ -1,5 +1,7 @@
 package thorny.grasscutters.AttackModifier;
 
+import java.util.ArrayList;
+
 import emu.grasscutter.plugin.Plugin;
 import emu.grasscutter.server.event.EventHandler;
 import emu.grasscutter.server.event.HandlerPriority;
@@ -48,6 +50,11 @@ public final class AttackModifier extends Plugin {
 
     public void reloadConfig() {
         config.loadConfig();
+    }
+
+    public void saveBlacklist(ArrayList<Integer> blacklistUIDs){
+        config.saveBlacklist(blacklistUIDs);
+        config.loadBlacklist();
     }
 
 }
