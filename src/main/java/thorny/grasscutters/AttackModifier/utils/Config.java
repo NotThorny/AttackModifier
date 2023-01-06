@@ -10,7 +10,7 @@ public final class Config {
     public characters kaeyaIds = new characters();
     public characters dilucIds = new characters();
     public characters razorIds = new characters();
-    public characters amberIds = new characters();
+    public characters amborIds = new characters();
     public characters ventiIds = new characters();
     public characters xianglingIds = new characters();
     public characters beidouIds = new characters();

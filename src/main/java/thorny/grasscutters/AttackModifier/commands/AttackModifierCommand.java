@@ -141,6 +141,7 @@ public class AttackModifierCommand implements CommandHandler {
                 // Should only be called when config is missing entry for the active character
                 Grasscutter.getLogger().info("Invalid or missing config for: " + curName);
                 e.printStackTrace();
+                return;
             }
 
             // Universal switch
