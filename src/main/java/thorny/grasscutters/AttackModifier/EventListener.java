@@ -7,7 +7,6 @@ import emu.grasscutter.net.proto.EvtDoSkillSuccNotifyOuterClass.EvtDoSkillSuccNo
 import emu.grasscutter.server.event.EventHandler;
 import emu.grasscutter.server.event.HandlerPriority;
 import emu.grasscutter.server.event.game.ReceivePacketEvent;
-import thorny.grasscutters.AttackModifier.commands.AttackModifierCommand;
 
 /**
  * A class containing all event handlers.
@@ -36,7 +35,7 @@ public final class EventListener {
                 int uuid = session.getPlayer().getUid();
 
                 // Send to addAttack
-                AttackModifierCommand.addAttack(session, skillId, uuid);
+                AddAttack.addAttack(session, skillId, uuid);
             }
         }
 }

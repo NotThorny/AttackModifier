@@ -52,6 +52,11 @@ public final class AttackModifier extends Plugin {
         config.loadConfig();
     }
 
+    public void saveGadgetConfig(Config updated, int uid){
+        config.saveGadgetList(updated, uid);
+        config.loadGadgetConfig(uid);
+    }
+
     public void saveBlacklist(ArrayList<Integer> blacklistUIDs){
         config.saveBlacklist(blacklistUIDs);
         config.loadBlacklist();
