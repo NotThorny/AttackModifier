@@ -22,7 +22,7 @@ public final class Config {
     public characters fischlIds = new characters();
     public characters bennettIds = new characters();
     public characters tartagliaIds = new characters();
-    public characters noelleIds = new characters();
+    public characters noelIds = new characters();
     public characters qiqiIds = new characters();
     public characters chongyunIds = new characters();
     public characters ganyuIds = new characters();

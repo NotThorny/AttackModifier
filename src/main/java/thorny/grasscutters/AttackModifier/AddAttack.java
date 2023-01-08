@@ -123,7 +123,7 @@ public class AddAttack {
 
                 // Remove entity
                 scene.removeEntity(gadget, VisionType.VISION_TYPE_REMOVE);
-                scene.broadcastPacket(new PacketSceneEntityDisappearNotify(gadget, VisionType.VISION_TYPE_REMOVE));
+                //scene.broadcastPacket(new PacketSceneEntityDisappearNotify(gadget, VisionType.VISION_TYPE_REMOVE));
             } // if
         } // for
           // Remove gadgets and clean list
