@@ -418,5 +418,19 @@
       "elementalSkill": 0,
       "elementalBurst": 0
     }
+  },
+  "alhathamIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
+  },
+  "yaoyaoIds": {
+    "skill": {
+      "normalAtk": 0,
+      "elementalSkill": 0,
+      "elementalBurst": 0
+    }
   }
 }

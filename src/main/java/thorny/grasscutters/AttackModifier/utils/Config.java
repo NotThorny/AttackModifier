@@ -63,6 +63,12 @@ public final class Config {
     public characters laylaIds = new characters();
     public characters wandererIds = new characters();
     public characters faruzanIds = new characters();
+    public characters yaoyaoIds = new characters();
+    public characters alhathamIds = new characters();
+    public characters dehyaIds = new characters();
+    public characters mikaIds = new characters();
+    public characters kavehIds = new characters();
+    public characters baizhuIds = new characters();
 
     public static class characters {
 

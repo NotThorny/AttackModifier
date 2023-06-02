@@ -3,6 +3,7 @@
   "description": "Make attacks do extra things",
   "version": "1.3.0-dev",
   "authors": [ "NotThorny" ],
+  "api": 2,
   
   "mainClass": "thorny.grasscutters.AttackModifier.AttackModifier",
   

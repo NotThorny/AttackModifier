@@ -5,15 +5,14 @@ import java.util.List;
 
 import emu.grasscutter.Grasscutter;
 import emu.grasscutter.command.CommandHandler;
-import emu.grasscutter.data.excels.AvatarSkillDepotData;
+import emu.grasscutter.data.excels.avatar.AvatarSkillDepotData;
 import emu.grasscutter.game.avatar.Avatar;
 import emu.grasscutter.game.entity.EntityGadget;
 import emu.grasscutter.game.player.Player;
+import emu.grasscutter.game.world.Position;
 import emu.grasscutter.game.world.Scene;
 import emu.grasscutter.net.proto.VisionTypeOuterClass.VisionType;
 import emu.grasscutter.server.game.GameSession;
-import emu.grasscutter.server.packet.send.PacketSceneEntityDisappearNotify;
-import emu.grasscutter.utils.Position;
 import thorny.grasscutters.AttackModifier.commands.AttackModifierCommand;
 import thorny.grasscutters.AttackModifier.utils.Config;
 import thorny.grasscutters.AttackModifier.utils.Config.characters;
@@ -123,7 +122,6 @@ public class AddAttack {
 
                 // Remove entity
                 scene.removeEntity(gadget, VisionType.VISION_TYPE_REMOVE);
-                //scene.broadcastPacket(new PacketSceneEntityDisappearNotify(gadget, VisionType.VISION_TYPE_REMOVE));
             } // if
         } // for
           // Remove gadgets and clean list
@@ -142,7 +140,7 @@ public class AddAttack {
             return curr;
         }
     }
-    
+
     public static void setGadget(Player targetPlayer, String avatarName, int uid, String attackType, int newGadget) {
         characters avatarToChange = null;
         Config gadgetConfig = AttackModifier.getInstance().config.getGadgetConfig();
@@ -150,10 +148,11 @@ public class AddAttack {
             avatarToChange = AddAttack.getCharacter.getCurrent(avatarName);
             CommandHandler.sendMessage(targetPlayer, "Setting " + attackType + " to " + newGadget);
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-            CommandHandler.sendMessage(targetPlayer, "Failed to set gadget! Change in plugins/AttackModifier/config.json");
+            CommandHandler.sendMessage(targetPlayer,
+                    "Failed to set gadget! Change in plugins/AttackModifier/config.json");
         }
         switch (attackType) {
-            default ->  CommandHandler.sendMessage(targetPlayer, "/at set n|e|q [gadgetId]");
+            default -> CommandHandler.sendMessage(targetPlayer, "/at set n|e|q [gadgetId]");
             case "n" -> avatarToChange.skill.normalAtk = newGadget; // Normal attack
             case "e" -> avatarToChange.skill.elementalSkill = newGadget; // Elemental skill
             case "q" -> avatarToChange.skill.elementalBurst = newGadget; // Burst
