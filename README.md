@@ -4,7 +4,7 @@
  
  You may get hit by your own attacks.
  
- Preview:
+ Preview by Moistcrafter:
  
  https://user-images.githubusercontent.com/107363768/245295660-291fa040-4a0a-4c7b-8914-e18eb7da08df.mp4
 
