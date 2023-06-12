@@ -5,7 +5,8 @@
  You may get hit by your own attacks.
  
  Preview:
- https://github.com/NotThorny/AttackModifier/assets/107363768/e6e5c53d-f692-4f5a-976f-9ef2bfd98b6e
+ 
+ https://user-images.githubusercontent.com/107363768/245295660-291fa040-4a0a-4c7b-8914-e18eb7da08df.mp4
 
 ## Installation
 **Prebuilt JAR (Recommended):** 
