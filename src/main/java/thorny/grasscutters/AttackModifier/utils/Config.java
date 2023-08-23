@@ -69,6 +69,10 @@ public final class Config {
     public characters mikaIds = new characters();
     public characters kavehIds = new characters();
     public characters baizhuIds = new characters();
+	public characters kiraraIds = new characters();
+    public characters linetteIds = new characters();
+    public characters lineyIds = new characters();
+    public characters freminetIds = new characters();
 
     public static class characters {
 
