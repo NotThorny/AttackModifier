@@ -73,6 +73,20 @@ public final class Config {
     public characters linetteIds = new characters();
     public characters lineyIds = new characters();
     public characters freminetIds = new characters();
+    public characters wriothesleyIds = new characters();
+	public characters neuvilletteIds = new characters();
+    public characters charlotteIds = new characters();
+    public characters furinaIds = new characters();
+    public characters chevreuseIds = new characters();
+    public characters naviaIds = new characters();
+    public characters gamingIds = new characters();
+	public characters xianyunIds = new characters();
+    public characters chioriIds = new characters();
+    public characters sigewinneIds = new characters();
+    public characters arlecchinoIds = new characters();
+    public characters sethosIds = new characters();
+    public characters clorindeIds = new characters();
+    
 
     public static class characters {
 

@@ -22,6 +22,15 @@ public class AddAttack {
     static ArrayList<Integer> blacklistUIDs = AttackModifier.getInstance().config.getBlacklist();
     static List<EntityGadget> activeGadgets = new ArrayList<>(); // Current gadgets
     static List<EntityGadget> removeGadgets = new ArrayList<>(); // To be removed gadgets
+    public static int x = 0;
+    public static int y = 0;
+    public static int z = 0;
+
+    public static void setXYZ(int x, int y, int z) {
+        AddAttack.x = x;
+        AddAttack.y = y;
+        AddAttack.z = z;
+    }
 
     public static void addAttack(GameSession session, int skillId, int uid) {
 
@@ -86,6 +95,13 @@ public class AddAttack {
             if (usedAttack == 0) {
                 target.addX((float) (r * Math.sin(Math.PI / 180 * angle)));
                 target.addZ((float) (r * Math.cos(Math.PI / 180 * angle)));
+            }
+
+            // Optional xyz args
+            if (x != 0 || y != 0 || z != 0) {
+                target.addX(x);
+                target.addY(y);
+                target.addZ(z);
             }
 
             // Only spawn on match

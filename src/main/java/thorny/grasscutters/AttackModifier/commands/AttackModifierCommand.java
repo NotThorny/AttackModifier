@@ -37,8 +37,12 @@ public class AttackModifierCommand implements CommandHandler {
         int thing = 0;
         int newGadget = -1;
         String state;
-        String avatarName = targetPlayer.getTeamManager().getCurrentAvatarEntity().getAvatar().getAvatarData().getName().toLowerCase() + "Ids";
-        int uid = targetPlayer.getUid();        
+        String avatarName = targetPlayer.getTeamManager().getCurrentAvatarEntity().getAvatar().getAvatarData().getName()
+                .toLowerCase() + "Ids";
+        int uid = targetPlayer.getUid();
+        int x = 0;
+        int y = 0;
+        int z = 0;
 
         state = args.get(0);
         try {
@@ -48,19 +52,23 @@ public class AttackModifierCommand implements CommandHandler {
 
         // Change whether added attacks should be on or not
         if (state.equals("off")) {
-            if(blacklistUIDs.contains(uid)){
+            if (blacklistUIDs.contains(uid)) {
                 CommandHandler.sendMessage(targetPlayer, "Added attacks already disabled!");
-            }else{blacklistUIDs.add(uid);
+            } else {
+                blacklistUIDs.add(uid);
                 AttackModifier.getInstance().saveBlacklist(blacklistUIDs);
-                CommandHandler.sendMessage(targetPlayer, "Disabled added attacks!");}   
+                CommandHandler.sendMessage(targetPlayer, "Disabled added attacks!");
+            }
         }
 
         if (state.equals("on")) {
-            if(blacklistUIDs.contains(uid)){
+            if (blacklistUIDs.contains(uid)) {
                 blacklistUIDs.remove(Integer.valueOf(uid));
                 AttackModifier.getInstance().saveBlacklist(blacklistUIDs);
                 CommandHandler.sendMessage(targetPlayer, "Enabled added attacks!");
-            }else{CommandHandler.sendMessage(targetPlayer, "Added attacks already enabled!!");}    
+            } else {
+                CommandHandler.sendMessage(targetPlayer, "Added attacks already enabled!!");
+            }
         }
 
         if (state.equals("remove")) {
@@ -73,9 +81,35 @@ public class AttackModifierCommand implements CommandHandler {
             AttackModifier.getInstance().reloadConfig();
             CommandHandler.sendMessage(targetPlayer, "Reloaded config!");
         }
-        if (state.equals("set")){
+        if (state.equals("set")) {
             var attackType = args.get(1).toLowerCase();
-            try{newGadget = Integer.parseInt(args.get(2));}catch(Exception e){sendUsageMessage(targetPlayer); return;}
+            try {
+                newGadget = Integer.parseInt(args.get(2));
+            } catch (Exception e) {
+                sendUsageMessage(targetPlayer);
+                return;
+            }
+            try {
+                if (args.size() > 3) {
+                    for (var a : args) {
+                        if (a.startsWith("x")) {
+                            x = Integer.parseInt(a.substring(1));
+                        }
+                        if (a.startsWith("y")) {
+                            y = Integer.parseInt(a.substring(1));
+                        }
+                        if (a.startsWith("z")) {
+                            z = Integer.parseInt(a.substring(1));
+                        }
+                    };
+                    AddAttack.setXYZ(x, y, z);
+                    CommandHandler.sendMessage(targetPlayer, "Set spawn coordinates of: x" + x + ", y" + y + ", z" + z);
+                }
+            } catch (Exception e) {
+                CommandHandler.sendMessage(targetPlayer,
+                        "Coordinates may be invalid. Ensure they match the format of x123 y123 z123. Only the desired x, y, or z is required.\n If you only want to change y, include just y123.");
+            }
+
             AddAttack.setGadget(targetPlayer, avatarName, uid, attackType, newGadget);
             CommandHandler.sendMessage(targetPlayer, "Set new gadget!");
         }
