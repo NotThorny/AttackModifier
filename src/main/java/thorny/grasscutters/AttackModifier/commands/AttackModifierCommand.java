@@ -112,6 +112,7 @@ public class AttackModifierCommand implements CommandHandler {
 
             AddAttack.setGadget(targetPlayer, avatarName, uid, attackType, newGadget);
             CommandHandler.sendMessage(targetPlayer, "Set new gadget!");
+            return;
         }
 
         EntityGadget entity = new EntityGadget(scene, thing, pos, rot);
