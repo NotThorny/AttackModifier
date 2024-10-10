@@ -86,7 +86,10 @@ public final class Config {
     public characters arlecchinoIds = new characters();
     public characters sethosIds = new characters();
     public characters clorindeIds = new characters();
-    
+    public characters emileIds = new characters();
+    public characters kachinaIds = new characters();
+    public characters kinichIds = new characters();
+    public characters mualaniIds = new characters();
 
     public static class characters {
 
