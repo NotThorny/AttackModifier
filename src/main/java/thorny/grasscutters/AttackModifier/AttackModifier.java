@@ -6,11 +6,12 @@ import emu.grasscutter.plugin.Plugin;
 import emu.grasscutter.server.event.EventHandler;
 import emu.grasscutter.server.event.HandlerPriority;
 import emu.grasscutter.server.event.game.ReceivePacketEvent;
-import thorny.grasscutters.AttackModifier.utils.*;
+import thorny.grasscutters.AttackModifier.utils.Config;
+import thorny.grasscutters.AttackModifier.utils.ConfigParser;
 
 public final class AttackModifier extends Plugin {
     private static AttackModifier instance;
-    public ConfigParser config;
+    private ConfigParser config;
 
     public static AttackModifier getInstance() {
         return instance;
@@ -44,22 +45,41 @@ public final class AttackModifier extends Plugin {
         this.getLogger().info("Attack Modifier has been disabled.");
     }
 
-    public void getConfig() {
-        config.getConfig();
+    public Config getConfig() {
+        return this.config.getGadgetConfig();
     }
 
-    public void reloadConfig() {
-        config.loadConfig();
+    public void setConfig(ConfigParser config) {
+        this.config = config;
+    }
+
+    public void reloadConfig(Config updated) {
+        this.config.setConfig(updated);
+        this.config.loadConfig();
+        instance = this;
+    }
+
+    public void reloadConfig(int uid) {
+        this.config.loadGadgetConfig(uid);
+        instance = this;
+    }
+
+    public int getConfigUID() {
+        return this.config.getGadgetConfigUid();
     }
 
     public void saveGadgetConfig(Config updated, int uid){
-        config.saveGadgetList(updated, uid);
-        config.loadGadgetConfig(uid);
+        this.config.saveGadgetList(updated, uid);
+        this.config.loadGadgetConfig(uid);
+    }
+
+    public ArrayList<Integer> getBlackList() {
+        return this.config.getBlacklist();
     }
 
     public void saveBlacklist(ArrayList<Integer> blacklistUIDs){
-        config.saveBlacklist(blacklistUIDs);
-        config.loadBlacklist();
+        this.config.saveBlacklist(blacklistUIDs);
+        this.config.loadBlacklist();
     }
 
 }

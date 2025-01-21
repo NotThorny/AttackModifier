@@ -14,12 +14,12 @@ import emu.grasscutter.game.world.Scene;
 import emu.grasscutter.net.proto.VisionTypeOuterClass.VisionType;
 import emu.grasscutter.server.game.GameSession;
 import thorny.grasscutters.AttackModifier.commands.AttackModifierCommand;
+import thorny.grasscutters.AttackModifier.utils.CharacterAvatar;
+import thorny.grasscutters.AttackModifier.utils.CharacterAvatar.SkillIds;
 import thorny.grasscutters.AttackModifier.utils.Config;
-import thorny.grasscutters.AttackModifier.utils.Config.characters;
 
 public class AddAttack {
-
-    static ArrayList<Integer> blacklistUIDs = AttackModifier.getInstance().config.getBlacklist();
+    static ArrayList<Integer> blacklistUIDs = AttackModifier.getInstance().getBlackList();
     static List<EntityGadget> activeGadgets = new ArrayList<>(); // Current gadgets
     static List<EntityGadget> removeGadgets = new ArrayList<>(); // To be removed gadgets
     public static int x = 0;
@@ -35,17 +35,24 @@ public class AddAttack {
     public static void addAttack(GameSession session, int skillId, int uid) {
 
         if (!(blacklistUIDs.contains(uid))) {
-            int fileUid = AttackModifier.getInstance().config.getGadgetConfigUid();
+            int fileUid = AttackModifier.getInstance().getConfigUID();
 
             if (!(fileUid == uid)) {
-                AttackModifier.getInstance().config.loadGadgetConfig(uid);
+                Grasscutter.getLogger().debug("[AttackModifier] Loaded player " + uid + " config");
+                AttackModifier.getInstance().reloadConfig(uid);
             }
-            int addedAttack = 0; // Default of no gadget
+
+            int addedAttack; // Gadget to add
             int usedAttack = -1; // Default of no attack
 
             // Get avatar info
             Avatar avatar = session.getPlayer().getTeamManager().getCurrentAvatarEntity().getAvatar();
             AvatarSkillDepotData skillDepot = avatar.getSkillDepot();
+
+            if (skillDepot == null) {
+                Grasscutter.getLogger().debug("[AttackModifier] Attempted to get null skill data, skipping.");
+                return;
+            }
 
             // Check what skill type was used
             if (skillId == (skillDepot.getSkills().get(0))) {
@@ -59,26 +66,32 @@ public class AddAttack {
             }
 
             // Get current avatar name
-            String curName = avatar.getAvatarData().getName().toLowerCase() + "Ids";
-            characters currentAvatar = null;
+            String curName = avatar.getAvatarData().getName().toLowerCase();
 
-            // Get avatar from config
-            try {
-                currentAvatar = AddAttack.getCharacter.getCurrent(curName);
-            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException
-                    | IllegalAccessException e) {
-                // Should only be called when config is missing entry for the active character
-                Grasscutter.getLogger().info("Invalid or missing config for: " + curName);
-                e.printStackTrace();
-                return;
+            AttackModifier.getInstance().reloadConfig(uid);
+
+            var currentAvatar = AttackModifier.getInstance().getConfig().getCharacters().get(curName);
+
+            // Create new entry if it does not exist
+            if (currentAvatar == null) {
+                CharacterAvatar temp = new CharacterAvatar(0, 0, 0);
+                currentAvatar = temp;
+
+                // Add the new entry
+                AttackModifier.getInstance().getConfig().getCharacters().put(curName, currentAvatar);
+                AttackModifier.getInstance().saveGadgetConfig(AttackModifier.getInstance().getConfig(), uid);
+            }
+
+            if (currentAvatar.getSkills() == null) {
+                Grasscutter.getLogger().debug("Skills are null!" + AttackModifier.getInstance().getConfig().toCleanString());
             }
 
             // Universal switch
             switch (usedAttack) {
                 default -> addedAttack = 0;
-                case 0 -> addedAttack = currentAvatar.skill.normalAtk; // Normal attack
-                case 1 -> addedAttack = currentAvatar.skill.elementalSkill; // Elemental skill
-                case 2 -> addedAttack = currentAvatar.skill.elementalBurst; // Burst
+                case 0 -> addedAttack = currentAvatar.getSkills().normalAtk(); // Normal attack
+                case 1 -> addedAttack = currentAvatar.getSkills().elementalSkill(); // Elemental skill
+                case 2 -> addedAttack = currentAvatar.getSkills().elementalBurst(); // Burst
             }
 
             // Get position
@@ -114,8 +127,9 @@ public class AddAttack {
 
                 activeGadgets.add(att);
 
-                // Try to make it not hurt self
                 scene.addEntity(att);
+
+                // For future use, this may be helpful in preventing self-damage
                 // att.setFightProperty(2001, 0);
                 // att.setFightProperty(1, 0);
 
@@ -146,33 +160,37 @@ public class AddAttack {
         AttackModifierCommand.userCalled = false;
     } // removeGadgets
 
-    public static class getCharacter {
-        public static characters getCurrent(String curName)
-                throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-            characters curr = new characters();
-            var me = AttackModifier.getInstance().config.getGadgetConfig().getClass().getDeclaredField(curName);
-            me.setAccessible(true);
-            curr = (characters) me.get(AttackModifier.getInstance().config.getGadgetConfig());
-            return curr;
-        }
-    }
-
     public static void setGadget(Player targetPlayer, String avatarName, int uid, String attackType, int newGadget) {
-        characters avatarToChange = null;
-        Config gadgetConfig = AttackModifier.getInstance().config.getGadgetConfig();
-        try {
-            avatarToChange = AddAttack.getCharacter.getCurrent(avatarName);
-            CommandHandler.sendMessage(targetPlayer, "Setting " + attackType + " to " + newGadget);
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-            CommandHandler.sendMessage(targetPlayer,
-                    "Failed to set gadget! Change in plugins/AttackModifier/config.json");
+        // Get config
+        //AttackModifier.getInstance().config.loadGadgetConfig(uid, false);
+        Config gadgetConfig = AttackModifier.getInstance().getConfig();
+
+        // Get character
+        var changedChar = gadgetConfig.getCharacters().get(avatarName);
+
+        SkillIds charSkills;
+
+        // If it is a new character
+        if (changedChar == null) {
+            changedChar = new CharacterAvatar(0, 0, 0);
         }
+
+        charSkills = changedChar.getSkills();
+
         switch (attackType) {
             default -> CommandHandler.sendMessage(targetPlayer, "/at set n|e|q [gadgetId]");
-            case "n" -> avatarToChange.skill.normalAtk = newGadget; // Normal attack
-            case "e" -> avatarToChange.skill.elementalSkill = newGadget; // Elemental skill
-            case "q" -> avatarToChange.skill.elementalBurst = newGadget; // Burst
+            case "n" -> charSkills.setNormalAtk(newGadget); // Normal attack
+            case "e" -> charSkills.setElementalSkill(newGadget); // Elemental skill
+            case "q" -> charSkills.setElementalBurst(newGadget); // Burst
         }
+
+        // Set new skills
+        changedChar.setSkills(charSkills);
+
+        // Add new values
+        gadgetConfig.getCharacters().put(avatarName, changedChar);
+
+        // Save changes
         AttackModifier.getInstance().saveGadgetConfig(gadgetConfig, uid);
     }
 }

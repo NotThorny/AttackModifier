@@ -6,7 +6,7 @@
 
     <groupId>NotThorny</groupId> <!-- Replace with your groupId -->
     <artifactId>AttackModifier</artifactId> <!-- Replace with your plugin name. -->
-    <version>0.0.1</version> <!-- The template's version corresponds to the latest API version. -->
+    <version>2.0.0</version> <!-- The template's version corresponds to the latest API version. -->
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -28,7 +28,7 @@
         <dependency>
             <groupId>xyz.grasscutters</groupId> <!-- Versions below 1.0.3-dev are on 'tech.xigam' -->
             <artifactId>grasscutter</artifactId>
-            <version>1.7.4-50</version> <!-- Replace with the latest version of the API. -->
+            <version>1.7.4-53</version> <!-- Replace with the latest version of the API. -->
         </dependency>
     </dependencies>
 </project>

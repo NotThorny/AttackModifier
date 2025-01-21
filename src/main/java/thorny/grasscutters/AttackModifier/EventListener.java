@@ -2,6 +2,7 @@ package thorny.grasscutters.AttackModifier;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 
+import emu.grasscutter.Grasscutter;
 import emu.grasscutter.net.packet.PacketOpcodes;
 import emu.grasscutter.net.proto.EvtDoSkillSuccNotifyOuterClass.EvtDoSkillSuccNotify;
 import emu.grasscutter.server.event.EventHandler;
@@ -20,22 +21,27 @@ import emu.grasscutter.server.event.game.ReceivePacketEvent;
  * cancels the event with {@link EventHandler#ignore(boolean)}.
  */
 public final class EventListener {
-        public static void onPacket(ReceivePacketEvent event) {
-            if (event.getPacketId() == PacketOpcodes.EvtDoSkillSuccNotify){
-                EvtDoSkillSuccNotify notify = null;
-                try {
-                    notify = EvtDoSkillSuccNotify.parseFrom(event.getPacketData());
-                } catch (InvalidProtocolBufferException e) {
-                    e.printStackTrace();
-                }
-
-                // Get packet info
-                var session = event.getGameSession();
-                int skillId = notify.getSkillId();
-                int uuid = session.getPlayer().getUid();
-
-                // Send to addAttack
-                AddAttack.addAttack(session, skillId, uuid);
+    public static void onPacket(ReceivePacketEvent event) {
+        if (event.getPacketId() == PacketOpcodes.EvtDoSkillSuccNotify) {
+            EvtDoSkillSuccNotify notify = null;
+            try {
+                notify = EvtDoSkillSuccNotify.parseFrom(event.getPacketData());
+            } catch (InvalidProtocolBufferException e) {
+                Grasscutter.getLogger().error("Failed to parse packet data for EvtDoSkillSuccNotify");
             }
+
+            // Sanity check
+            if (notify == null) {
+                return;
+            }
+
+            // Get packet info
+            var session = event.getGameSession();
+            int skillId = notify.getSkillId();
+            int uuid = session.getPlayer().getUid();
+
+            // Send to addAttack
+            AddAttack.addAttack(session, skillId, uuid);
         }
+    }
 }
