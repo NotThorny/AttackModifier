@@ -43,7 +43,7 @@ mvn clean install
  Now with `config.json` yay
  
  ```json
- "ayakaIds": {
+ "ayaka": {
     "skill": {
       "normalAtk": 0,
       "elementalSkill": 0,
