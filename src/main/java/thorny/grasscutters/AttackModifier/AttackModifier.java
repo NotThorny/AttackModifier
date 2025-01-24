@@ -1,7 +1,9 @@
 package thorny.grasscutters.AttackModifier;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import emu.grasscutter.net.packet.PacketOpcodes;
 import emu.grasscutter.plugin.Plugin;
 import emu.grasscutter.server.event.EventHandler;
 import emu.grasscutter.server.event.HandlerPriority;
@@ -12,6 +14,7 @@ import thorny.grasscutters.AttackModifier.utils.ConfigParser;
 public final class AttackModifier extends Plugin {
     private static AttackModifier instance;
     private ConfigParser config;
+    private HashMap<String, Integer> opcodeMap;
 
     public static AttackModifier getInstance() {
         return instance;
@@ -22,6 +25,7 @@ public final class AttackModifier extends Plugin {
         // Set the plugin instance.
         instance = this;
         this.config = new ConfigParser();
+        this.opcodeMap = createOpcodeMap();
         this.getLogger().info("Loaded yay");
     }
 
@@ -43,6 +47,28 @@ public final class AttackModifier extends Plugin {
     public void onDisable() {
         // Log a plugin status message.
         this.getLogger().info("Attack Modifier has been disabled.");
+    }
+
+    // Modified from PacketOpcodeUtils
+    private HashMap<String, Integer> createOpcodeMap() {
+        this.opcodeMap = new HashMap<String, Integer>();
+
+        var fields = PacketOpcodes.class.getFields();
+        for (var f : fields) {
+            if (f.getType().equals(int.class)) {
+                try {
+                    this.opcodeMap.put(f.getName(), f.getInt(null));
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }
+
+        return this.opcodeMap;
+    }
+
+    public HashMap<String, Integer> getOpcodeMap() {
+        return this.opcodeMap;
     }
 
     public Config getConfig() {

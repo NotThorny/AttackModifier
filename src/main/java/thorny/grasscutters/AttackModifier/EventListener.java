@@ -3,7 +3,6 @@ package thorny.grasscutters.AttackModifier;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import emu.grasscutter.Grasscutter;
-import emu.grasscutter.net.packet.PacketOpcodes;
 import emu.grasscutter.net.proto.EvtDoSkillSuccNotifyOuterClass.EvtDoSkillSuccNotify;
 import emu.grasscutter.server.event.EventHandler;
 import emu.grasscutter.server.event.HandlerPriority;
@@ -22,7 +21,8 @@ import emu.grasscutter.server.event.game.ReceivePacketEvent;
  */
 public final class EventListener {
     public static void onPacket(ReceivePacketEvent event) {
-        if (event.getPacketId() == PacketOpcodes.EvtDoSkillSuccNotify) {
+        int expectedPacketId = AttackModifier.getInstance().getOpcodeMap().get("EvtDoSkillSuccNotify");
+        if (event.getPacketId() == expectedPacketId) {
             EvtDoSkillSuccNotify notify = null;
             try {
                 notify = EvtDoSkillSuccNotify.parseFrom(event.getPacketData());
