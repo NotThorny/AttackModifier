@@ -21,8 +21,7 @@ import emu.grasscutter.server.event.game.ReceivePacketEvent;
  */
 public final class EventListener {
     public static void onPacket(ReceivePacketEvent event) {
-        int expectedPacketId = AttackModifier.getInstance().getOpcodeMap().get("EvtDoSkillSuccNotify");
-        if (event.getPacketId() == expectedPacketId) {
+        if (event.getPacketId() == AttackModifier.getInstance().getSkillSuccPacketId()) {
             EvtDoSkillSuccNotify notify = null;
             try {
                 notify = EvtDoSkillSuccNotify.parseFrom(event.getPacketData());

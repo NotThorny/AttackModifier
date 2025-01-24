@@ -1,7 +1,6 @@
 package thorny.grasscutters.AttackModifier;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import emu.grasscutter.net.packet.PacketOpcodes;
 import emu.grasscutter.plugin.Plugin;
@@ -14,7 +13,7 @@ import thorny.grasscutters.AttackModifier.utils.ConfigParser;
 public final class AttackModifier extends Plugin {
     private static AttackModifier instance;
     private ConfigParser config;
-    private HashMap<String, Integer> opcodeMap;
+    private int skillSuccPacketId;
 
     public static AttackModifier getInstance() {
         return instance;
@@ -25,7 +24,7 @@ public final class AttackModifier extends Plugin {
         // Set the plugin instance.
         instance = this;
         this.config = new ConfigParser();
-        this.opcodeMap = createOpcodeMap();
+        setSkillSuccPacketId();
         this.getLogger().info("Loaded yay");
     }
 
@@ -50,25 +49,23 @@ public final class AttackModifier extends Plugin {
     }
 
     // Modified from PacketOpcodeUtils
-    private HashMap<String, Integer> createOpcodeMap() {
-        this.opcodeMap = new HashMap<String, Integer>();
-
+    private void setSkillSuccPacketId() {
         var fields = PacketOpcodes.class.getFields();
         for (var f : fields) {
             if (f.getType().equals(int.class)) {
-                try {
-                    this.opcodeMap.put(f.getName(), f.getInt(null));
-                } catch (Exception exception) {
-                    exception.printStackTrace();
+                if (f.getName().equals("EvtDoSkillSuccNotify")) {
+                    try {
+                        this.skillSuccPacketId = f.getInt(null);
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
                 }
             }
         }
-
-        return this.opcodeMap;
     }
 
-    public HashMap<String, Integer> getOpcodeMap() {
-        return this.opcodeMap;
+    public int getSkillSuccPacketId() {
+        return this.skillSuccPacketId;
     }
 
     public Config getConfig() {
@@ -94,7 +91,7 @@ public final class AttackModifier extends Plugin {
         return this.config.getGadgetConfigUid();
     }
 
-    public void saveGadgetConfig(Config updated, int uid){
+    public void saveGadgetConfig(Config updated, int uid) {
         this.config.saveGadgetList(updated, uid);
         this.config.loadGadgetConfig(uid);
     }
@@ -103,7 +100,7 @@ public final class AttackModifier extends Plugin {
         return this.config.getBlacklist();
     }
 
-    public void saveBlacklist(ArrayList<Integer> blacklistUIDs){
+    public void saveBlacklist(ArrayList<Integer> blacklistUIDs) {
         this.config.saveBlacklist(blacklistUIDs);
         this.config.loadBlacklist();
     }
