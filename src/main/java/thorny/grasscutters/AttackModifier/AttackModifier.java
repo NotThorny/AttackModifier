@@ -59,6 +59,9 @@ public final class AttackModifier extends Plugin {
                     } catch (Exception exception) {
                         exception.printStackTrace();
                     }
+
+                    // Found packet, stop checking
+                    return;
                 }
             }
         }
